@@ -1,0 +1,40 @@
+$hover-color: rgba(238, 210, 210, 0.204);
+
+.header {
+	grid-area: header;
+	background-color: rgb(146, 46, 146);
+	border-bottom: 3px solid rgb(88, 30, 88);
+	display: flex;
+	padding: 20px;
+	align-items: center;
+	justify-content: space-between;
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+
+	&__logo {
+		display: flex;
+
+		h1 {
+			margin-left: 15px;
+			color: #fff;
+		}
+	}
+
+	&__nav {
+		display: flex;
+		align-self: stretch;
+		align-items: stretch;
+		gap: 20px;
+		font-size: 24px;
+	}
+
+	&__link {
+		padding: 10px 15px;
+		display: flex;
+		align-items: center;
+		vertical-align: middle;
+		color: #fff;
+		&:hover {
+			background-color: $hover-color;
+		}
+	}
+}

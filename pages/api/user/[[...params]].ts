@@ -1,0 +1,91 @@
+import { NotFoundError } from "@prisma/client/runtime";
+import * as nextAuth from "next-auth";
+import {
+  BadRequestException,
+  Body,
+  createHandler,
+  Get,
+  InternalServerErrorException,
+  Param,
+  ParseNumberPipe,
+  Post,
+  Req,
+  ValidationPipe
+} from "next-api-decorators";
+
+import { ChangePasswordUserDto } from "./../../../dto/user/change-password.user.dto";
+import { UserResponseDto } from "../../../dto/user/user.response.dto";
+import { ProtectedApiDecorator } from "../../../middleware/protectedApiDecotator";
+import { CreateUserDto } from "./../../../dto/user/create.user.dto";
+import userService from "../../../service/user.service";
+
+class UserHandler {
+  @ProtectedApiDecorator()
+  @Get()
+  async users() {
+    try {
+      return await userService.all();
+    } catch (error) {
+      const err = error as Error;
+      return new InternalServerErrorException(err.message);
+    }
+  }
+
+  @ProtectedApiDecorator()
+  @Get("/:id")
+  async user(@Param("id", ParseNumberPipe) id: number) {
+    try {
+      const user = await userService.findByUnique({ id });
+      if (!user) {
+        throw new NotFoundError("Not found");
+      }
+      return new UserResponseDto(user);
+    } catch (error) {
+      const err = error as Error;
+      return new BadRequestException(err.message);
+    }
+  }
+
+  @Post("/sign-up")
+  async create(@Body(ValidationPipe) body: CreateUserDto) {
+    try {
+      const { password, confirmPassword, email, name } = body;
+
+      const existUser = await userService.findByUnique({ email });
+
+      if (existUser) {
+        throw Error("This e-mail already registered");
+      }
+
+      if (password !== confirmPassword) {
+        throw Error("Passwords are different");
+      }
+
+      const user = await userService.create({ password, email, name });
+      return new UserResponseDto(user);
+    } catch (error: unknown) {
+      const err = error as Error;
+      throw new BadRequestException(err.message);
+    }
+  }
+
+  @ProtectedApiDecorator()
+  @Post("/change-password")
+  async changePassword(
+    @Body() body: ChangePasswordUserDto,
+    @Req() req: nextAuth.AuthorizedNextApiRequest
+  ) {
+    try {
+      const id = Number(req.user.id!);
+
+      const user = await userService.changePassword(id, body);
+      return new UserResponseDto(user);
+    } catch (error: unknown) {
+      const err = error as Error;
+      throw new BadRequestException(err.message);
+    }
+  }
+}
+
+export default createHandler(UserHandler);
+

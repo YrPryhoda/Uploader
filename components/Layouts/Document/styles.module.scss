@@ -1,0 +1,8 @@
+.document {
+	display: flex;
+	flex-direction: column;
+	padding: 0 2rem;
+	box-sizing: border-box;
+	min-height: calc(100vh - 123px);
+	background-color: rgb(255, 245, 255);
+}

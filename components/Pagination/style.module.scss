@@ -1,0 +1,21 @@
+.container {
+	display: flex;
+	gap: 12px;
+	margin: 54px 0;
+
+	&__item {
+		display: flex;
+		border-radius: 5px;
+		justify-content: center;
+		align-items: center;
+		font-size: 1rem;
+		cursor: pointer;
+		width: 32px;
+		height: 32px;
+		border: 1px solid #000;
+	}
+
+	.active {
+		background-color: #a9c4ff;
+	}
+}
