@@ -1,12 +1,15 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import ImagesList from "../../components/ImagesList";
-import Pagination from "../../components/Pagination";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import React, { useEffect, useState } from "react";
+
 import { loadGalleryPerPage } from "../../store/slices/images/images.actions";
 import { imagesSliceSelector } from "../../store/slices/images/images.slice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import ImageMapLocation from "../../components/ImageMapLocation";
+import { notification } from "../../lib/notifications";
+import ImagesList from "../../components/ImagesList";
+import Pagination from "../../components/Pagination";
 import styles from "../../styles/Page.module.css";
+import Link from "next/link";
 
 interface IProps {
   images: IImage[];
@@ -15,19 +18,50 @@ interface IProps {
 
 const Images = ({ images, rows }: IProps) => {
   const dispatch = useAppDispatch();
-  const { gallery, galleryTotal } = useAppSelector(imagesSliceSelector);
-	
+  const { images: storeImages, galleryTotal } =
+    useAppSelector(imagesSliceSelector);
+  const [selectedImage, setSelectedImage] = useState<IImage | null>(null);
+
   useEffect(() => {
-    dispatch(loadGalleryPerPage({ gallery: images, total: rows }));
+    dispatch(loadGalleryPerPage({ images, total: rows }));
   }, [dispatch, images, rows]);
+
+  const handlerImageClick = (img: IImage) => {
+    if (!img.lat || !img.lng) {
+      return notification("info", "Location not found");
+    }
+
+    setSelectedImage(img);
+  };
+  const handlerModalClose = () => {
+    setSelectedImage(null);
+  };
+
+  const renderSelectedImgLocation = selectedImage ? (
+    <ImageMapLocation
+      geo={{ lat: selectedImage.lat!, lng: selectedImage.lng! }}
+      isOpen={!!selectedImage}
+      onClose={handlerModalClose}
+    />
+  ) : null;
 
   return (
     <div className={styles.document}>
+      <nav className={styles.subNav}>
+        <Link href={"/images/rating"} className={styles.subNav__link}>
+          Rating
+        </Link>
+      </nav>
       <h2>Images Gallery</h2>
-      {images.length ? <p>We have for you {galleryTotal} pictures</p> : null}
+      {images.length ? (
+        <p>
+          We have <b>{galleryTotal}</b> pictures for you
+        </p>
+      ) : null}
 
-      <ImagesList images={gallery} />
-      <Pagination total={galleryTotal} />
+      <ImagesList images={storeImages} onImgClick={handlerImageClick} />
+      {rows ? <Pagination total={galleryTotal} href={"/images/"} /> : null}
+      {renderSelectedImgLocation}
     </div>
   );
 };

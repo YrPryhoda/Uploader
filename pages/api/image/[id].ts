@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import path from "path";
+import { PrismaClient } from "@prisma/client";
 import fs from "fs/promises";
+import path from "path";
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,7 +24,11 @@ export default async function handler(
         "imagesDB",
         itemToDelete.title
       );
-      await fs.unlink(imagePath);
+      try {
+        await fs.unlink(imagePath);
+      } catch (error) {
+        console.log(error);
+      }
       const deletedItem = await prisma.image.delete({ where: { id } });
 
       res.status(200).json(deletedItem);

@@ -1,6 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import React from "react";
+
 import SignInForm from "../../components/SignIn";
 import styles from "../../styles/Auth.module.css";
 

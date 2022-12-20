@@ -2,10 +2,15 @@
 	grid-area: imagesList;
 	display: flex;
 	justify-content: space-around;
-	flex-wrap: wrap;
-	gap: 50px;
+	flex: 1;
+	gap: 20px;
 	margin-top: 50px;
-
+	min-width: calc(768px - 64px);
+	width: 100%;
+	flex-wrap: wrap;
+	@media screen and (max-width: 1239px) {
+		
+	}
 	&:last-child {
 		justify-self: self-start;
 	}
@@ -21,6 +26,8 @@
 	position: relative;
 	flex-direction: column;
 	align-items: center;
+	flex-shrink: 1;
+	max-width: calc(100vw / 5);
 
 	&__details {
 		box-sizing: border-box;
@@ -40,6 +47,27 @@
 
 	&__img {
 		object-fit: contain;
+		width: 100%;
+		cursor: pointer;
+
+		@media screen and (min-width: 1240px) {
+			min-height: 300px;
+		}
+	}
+
+	&__like {
+		display: flex;
+		align-items: center;
+
+		&_icon {
+			border-radius: 5px;
+			padding: 5px;
+			cursor: pointer;
+
+			&:hover {
+				background-color: rgb(245, 208, 208);
+			}
+		}
 	}
 
 	&__remove {

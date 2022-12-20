@@ -1,0 +1,52 @@
+.section {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	right: 0;
+	top: 0;
+	width: 30vw;
+	height: 100vh;
+	z-index: 1000;
+	background-color: rgba(204, 204, 204, 0.727);
+
+	@media screen and (max-width: 992px) {
+		width: 100%;
+		height: 100%;
+	}
+
+	&__close {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		right: 0;
+		font-size: 20px;
+		margin: 15px;
+		padding: 6px 15px;
+		justify-self: baseline;
+		align-self: flex-end;
+		background-color: #fff;
+		border: 1px solid #ccc;
+		border-radius: 20px;
+	}
+
+	&__title {
+		text-align: center;
+	}
+
+	&__wrapper {
+		overflow-y: auto;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+		padding: 10px;
+	}
+
+	&__img {
+		object-fit: contain;
+		width: 100%;
+		height: 100%;
+	}
+}

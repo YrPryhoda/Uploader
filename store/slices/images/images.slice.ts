@@ -2,7 +2,9 @@ import {
   loadGalleryPerPage,
   addImages,
   deleteImage,
-  loadProfileImages
+  loadProfileImages,
+  getByCoordinates,
+  likeImage
 } from "./images.actions";
 import { AppState } from "../../index";
 import { createSlice, SerializedError } from "@reduxjs/toolkit";
@@ -35,7 +37,7 @@ const imagesSlice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(loadGalleryPerPage, (state, action) => {
-        state.gallery = action.payload.gallery;
+        state.images = action.payload.images;
         state.galleryTotal = action.payload.total;
       })
       .addCase(loadProfileImages, (state, action) => {
@@ -61,12 +63,48 @@ const imagesSlice = createSlice({
         state.deleteLoading = false;
         state.galleryTotal -= 1;
         state.images = state.images.filter((el) => el.id !== action.payload.id);
-        state.gallery = state.gallery.filter(
-          (el) => el.id !== action.payload.id
-        );
       })
       .addCase(deleteImage.rejected, (state, action) => {
         state.deleteLoading = false;
+        state.error = action.error;
+      })
+      .addCase(getByCoordinates.rejected, (state, action) => {
+        state.error = action.error;
+        state.loading = false;
+      })
+      .addCase(getByCoordinates.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getByCoordinates.fulfilled, (state, action) => {
+        state.images = action.payload.images;
+        state.galleryTotal = action.payload.rows;
+        state.loading = false;
+      })
+      .addCase(likeImage.fulfilled, (state, action) => {
+        const { imageId, userId } = action.payload;
+        const imageIndex = state.images.findIndex((el) => el.id === imageId);
+
+        if (imageIndex < 0) {
+          return;
+        }
+
+        const modifiedImageLikes = state.images[imageIndex].like;
+        const existLikeIndex = modifiedImageLikes.findIndex(
+          (el) => el.userId === userId
+        );
+
+        if (existLikeIndex < 0) {
+          state.images[imageIndex].like = [
+            ...modifiedImageLikes,
+            action.payload
+          ];
+        } else {
+          state.images[imageIndex].like = modifiedImageLikes.filter(
+            (el) => el.userId !== userId
+          );
+        }
+      })
+      .addCase(likeImage.rejected, (state, action) => {
         state.error = action.error;
       })
 });

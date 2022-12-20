@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -18,6 +19,7 @@ model User {
   name      String
   password  String
   images    Image[]
+  likes     Like[]
 }
 
 model Image {
@@ -26,7 +28,17 @@ model Image {
   title       String
   description String
   createdAt   DateTime @default(now())
-	lat					Float?	
-	lng					Float?	
+  lat         Float?
+  lng         Float?
   userId      Int
+  like        Like[]
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  image     Image    @relation(fields: [imageId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  userId    Int
+  imageId   Int
 }

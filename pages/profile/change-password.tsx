@@ -1,4 +1,5 @@
 import React from "react";
+
 import ChangePasswordForm from "../../components/ChangePasswordForm";
 import styles from '../../styles/Page.module.css';
 

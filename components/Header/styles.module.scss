@@ -2,6 +2,7 @@ $hover-color: rgba(238, 210, 210, 0.204);
 
 .header {
 	grid-area: header;
+	min-width: 768px;
 	background-color: rgb(146, 46, 146);
 	border-bottom: 3px solid rgb(88, 30, 88);
 	display: flex;

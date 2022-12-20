@@ -1,8 +1,8 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import React from "react";
-import ProfileForm from "../../components/ProfileForm";
 
+import ProfileForm from "../../components/ProfileForm";
 import styles from "../../styles/Page.module.css";
 
 interface IProps {

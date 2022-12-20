@@ -1,10 +1,13 @@
 interface IImage {
   id: number;
-  user: any;
   title: string;
   description: string;
   createdAt: Date;
   userId: number;
+  like: ILike[];
+  user: IUser;
+  lat?: number;
+  lng?: number;
 }
 
 interface IUser {
@@ -13,6 +16,20 @@ interface IUser {
   updatedAt: Date;
   email: string;
   name: string;
+  likes?: ILike[];
+}
+
+interface IUserRating extends IUser {
+  _count: {
+    likes: number;
+  };
+}
+
+interface ILike {
+  id: number;
+  createdAt: Date;
+  userId: number;
+  imageId: number;
 }
 
 interface IUserInput {
@@ -29,6 +46,7 @@ interface IPasswordInput {
 }
 
 interface IGeo {
-	lat: number,
-	lng: number
+  lat: number;
+  lng: number;
 }
+

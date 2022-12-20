@@ -1,17 +1,18 @@
+import { SessionProvider } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import NProgress from "nprogress";
+import Router from "next/router";
 import Head from "next/head";
 import React from "react";
-import { Provider } from "react-redux";
-import { ToastContainer } from "react-toastify";
-import { SessionProvider } from "next-auth/react";
-import Router from "next/router";
-import NProgress from "nprogress";
+
 import "react-toastify/dist/ReactToastify.css";
 import "nprogress/nprogress.css";
 
 import styles from "./styles.module.scss";
 import { store } from "../../../store";
-import Header from "../../Header";
 import GetProfile from "../GetProfile";
+import Header from "../../Header";
 
 interface IProps {
   children: React.ReactElement;

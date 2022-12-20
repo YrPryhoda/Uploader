@@ -1,7 +1,8 @@
 import { signOut, useSession } from "next-auth/react";
+import React, { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Fragment } from "react";
+
 import styles from "./styles.module.scss";
 
 const Header = () => {
@@ -42,7 +43,7 @@ const Header = () => {
         <Link className={styles.header__link} href={"/images/1"}>
           Images
         </Link>
-        <Link className={styles.header__link} href={"/map"}>
+        <Link className={styles.header__link} href={"/map/1"}>
           Map
         </Link>
         {renderProfileJsx}

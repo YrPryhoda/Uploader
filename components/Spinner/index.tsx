@@ -1,5 +1,6 @@
-import React from "react";
 import { InfinitySpin } from "react-loader-spinner";
+import React from "react";
+
 import styles from "./styles.module.scss";
 
 const Spinner = () => {

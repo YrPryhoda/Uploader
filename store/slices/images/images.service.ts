@@ -5,8 +5,11 @@ class ImagesService {
     this.url = `${process.env.ABS_URL}/api/image`;
   }
 
-  async getUsersImages(id: number): Promise<{ data: IImage[] }> {
-    const response = await fetch(`${this.url}/user/${id}`);
+  async getUsersImages(
+    id: number,
+    page: number
+  ): Promise<{ rows: number; images: IImage[] }> {
+    const response = await fetch(`${this.url}/user/${id}?page=${page}`);
 
     if (!response.ok) {
       throw Error(response.statusText);
@@ -36,6 +39,28 @@ class ImagesService {
     if (!response.ok) {
       throw Error(response.statusText);
     }
+    return await response.json();
+  }
+
+  async getByCoordinates(options: IGeo & { page: number }) {
+    const response = await fetch(
+      `/api/coordinates?lat=${options.lat}&lng=${options.lng}&page=${options.page}`
+    );
+
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+
+    return await response.json();
+  }
+
+  async imageLike(options: { imageId: number }) {
+    const response = await fetch(`/api/reaction/${options.imageId}`);
+
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+
     return await response.json();
   }
 }

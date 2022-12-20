@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useGetProfile } from "../../../hooks/useGetProfile";
 
 interface IProps {

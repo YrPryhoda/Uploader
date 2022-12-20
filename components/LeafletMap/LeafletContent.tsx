@@ -1,9 +1,10 @@
-import { Marker, useMap, useMapEvents } from "react-leaflet";
-import L from "leaflet";
+import { Marker, useMapEvents } from "react-leaflet";
 import React, { useEffect } from "react";
+
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet/dist/leaflet.css";
-import styles from "./styles.module.scss";
+
+import { renderIcon } from "../../lib/map-marker";
 
 interface IProps {
   geo: IGeo;
@@ -11,11 +12,6 @@ interface IProps {
 }
 
 const LeafletContent = ({ geo, onChange }: IProps) => {
-  const icon = L.icon({
-    iconUrl: "map-icon.svg",
-    popupAnchor: [-0, -0],
-    iconSize: [30, 30]
-  });
   const map = useMapEvents({
     click(e) {
       onChange(e.latlng);
@@ -26,11 +22,7 @@ const LeafletContent = ({ geo, onChange }: IProps) => {
     map.setView(geo);
   }, [geo, map]);
 
-  return (
-    <div className={styles.container}>
-      <Marker icon={icon} position={geo}></Marker>
-    </div>
-  );
+  return <Marker icon={renderIcon()} position={geo}></Marker>;
 };
 
 export default LeafletContent;

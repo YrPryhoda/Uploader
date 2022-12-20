@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import React from "react";
 
-import { useForm } from "../../hooks/useForm";
-import { notification } from "../../lib/notifications";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { changePassword } from "../../store/slices/user/user.actions";
 import { userSliceSelector } from "../../store/slices/user/user.slice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { notification } from "../../lib/notifications";
+import { useForm } from "../../hooks/useForm";
 import styles from "./styles.module.scss";
 
 const ChangePasswordForm = () => {

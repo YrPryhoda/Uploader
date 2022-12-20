@@ -2,9 +2,9 @@ import React, { Fragment, useRef } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
-import { useAppSelector } from "../../store/hooks";
 import { notification } from "../../lib/notifications";
 import PreviewImagesList from "../PreviewImageList";
+import { useAppSelector } from "../../store/hooks";
 import styles from "./styles.module.scss";
 import Spinner from "../Spinner";
 

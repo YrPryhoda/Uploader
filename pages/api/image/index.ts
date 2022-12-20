@@ -1,8 +1,9 @@
-import { getSession } from "next-auth/react";
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getFormidable } from "../../../lib/formidable";
+import { PrismaClient } from "@prisma/client";
+import { getSession } from "next-auth/react";
+
 import imageService from "../../../service/image.service";
+import { getFormidable } from "../../../lib/formidable";
 
 export const config = {
   api: {

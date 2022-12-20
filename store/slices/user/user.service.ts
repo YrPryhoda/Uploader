@@ -42,6 +42,16 @@ class UserService {
       notification("error", err.message);
     }
   }
+
+	async getUsersRating() {
+		try {
+      const response = await fetch(`/api/user/rating`)
+      return await response.json();
+    } catch (error) {
+      const err = error as Error;
+      notification("error", err.message);
+    }
+	}
 }
 
 export default new UserService();

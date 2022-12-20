@@ -3,9 +3,23 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	min-width: 768px;
 }
 
 .map_container {
 	margin-top: 32px;
-	height: calc(100vh - 160px);
+	height: 50vh;
+}
+
+.map_section {
+	padding-bottom: 64px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.subNav {
+	margin: 20px 0;
+	display: flex;
+	width: 100%;
 }

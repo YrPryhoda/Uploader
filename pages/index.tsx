@@ -12,11 +12,13 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import UploadCoordsForm from "../components/UploadCoordsForm";
 import { notification } from "../lib/notifications";
 import ImagesList from "../components/ImagesList";
-import styles from "../styles/Home.module.css";
+import Pagination from "../components/Pagination";
 import DropZone from "../components/DropZone";
+import styles from "../styles/Home.module.css";
 
 interface IProps {
   images: IImage[];
+  total: number;
   error?: string;
 }
 
@@ -28,7 +30,7 @@ const Home = (props: IProps) => {
 
   useEffect(() => {
     dispatch(loadProfileImages(props.images));
-  }, []);
+  }, [dispatch, props.images]);
 
   if (props.error) {
     notification("error", props.error || dispatchError?.message);
@@ -46,6 +48,7 @@ const Home = (props: IProps) => {
 
     if (!result.type.includes("rejected")) {
       notification("success", "Upload successfully");
+      setSelectedImages([]);
       showModal(false);
     }
   };
@@ -60,7 +63,14 @@ const Home = (props: IProps) => {
         />
       </div>
       <ImagesList images={images} />
-      {modal && <UploadCoordsForm onSubmit={submitHandler} handlerClose={showModal}/>}
+      <div className={styles.paginationBlock}>
+        {props.total ? (
+          <Pagination total={props.total} href={"?page="} />
+        ) : null}
+      </div>
+      {modal && (
+        <UploadCoordsForm isOpen={modal} onSubmit={submitHandler} handlerClose={showModal} />
+      )}
     </div>
   );
 };
@@ -71,12 +81,23 @@ export const getServerSideProps = async (
   try {
     const session = await getSession({ req: context.req });
     const id = Number(session?.user.id);
+    const page = Number(context.query.page) || 1;
 
-    const images = await imagesService.getUsersImages(id);
+    if (!id) {
+      return {
+        props: {
+          images: [],
+          total: 0
+        }
+      };
+    }
+
+    const response = await imagesService.getUsersImages(id, page);
 
     return {
       props: {
-        images: images.data,
+        images: response.images,
+        total: response.rows,
         session
       }
     };

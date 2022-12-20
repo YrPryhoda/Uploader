@@ -1,17 +1,19 @@
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
 import styles from "./style.module.scss";
 
 interface IProps {
   total: number;
+  href: string;
 }
 
-const Pagination = ({ total }: IProps) => {
+const Pagination = ({ total, href }: IProps) => {
   const router = useRouter();
   const [page, setNavPage] = useState(1);
 
   useEffect(() => {
-    setNavPage(Number(router.query.page));
+    setNavPage(Number(router.query.page) || 1);
   }, [router.query.page]);
 
   const itemsPerPage = 4;
@@ -23,7 +25,7 @@ const Pagination = ({ total }: IProps) => {
     }
 
     setNavPage(newPage);
-    router.push(`/images/${newPage}`);
+    router.push(`${href}${newPage}`);
   };
 
   const paginationItem = (value: number) => {

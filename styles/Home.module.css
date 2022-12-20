@@ -11,3 +11,8 @@
 	grid-area: fileUploadForm;
 	display: flex;
 }
+
+.paginationBlock {
+	display: flex;
+	justify-content: center;
+}

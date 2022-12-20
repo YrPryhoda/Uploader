@@ -1,33 +1,25 @@
-import React from "react";
-import dynamic from "next/dynamic";
-import styles from "../../styles/Page.module.css";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { useRouter } from "next/router";
+import { GetStaticProps } from "next";
+import { useEffect } from "react";
 
-const NoSSRMap = dynamic(
-  () => import("../../components/LeafletMap/LeafletProvider"),
-  {
-    ssr: false
-  }
-);
+const MapRedirect = () => {
+  const router = useRouter();
 
-const MapPage = () => {
-  return (
-    <div className={styles.map_container}>
-      <NoSSRMap geo={{ lat: 50, lng: 38 }} onChange={() => {}} />
-    </div>
-  );
+  useEffect(() => {
+    router.replace("/map/1");
+  }, []);
+
+  return null;
 };
 
-export default MapPage;
+export default MapRedirect;
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-	try {
-		
-	} catch (error) {
-		
-	}
-  return { props: {} };
+export const getStaticProps: GetStaticProps = () => {
+  return {
+    redirect: {
+      destination: "/map/1",
+      permanent: true
+    }
+  };
 };
 

@@ -1,9 +1,12 @@
+import React, { Fragment } from "react";
 import dynamic from "next/dynamic";
-import React from "react";
+
 import { useForm } from "../../hooks/useForm";
 import styles from "./styles.module.scss";
+import Modal from "../Modal";
 
 interface IProps {
+	isOpen: boolean;
   onSubmit: (arg?: IGeo) => void;
   handlerClose: (arg: boolean) => void;
 }
@@ -27,8 +30,8 @@ const UploadCoordsForm = (props: IProps) => {
   };
 
   return (
-    <div className={styles.modal}>
-      <div className={`${styles.modal__form}`}>
+    <Modal isOpen={props.isOpen}>
+      <Fragment>
         <h3>You can bind images to geo coordinates</h3>
         <div className={styles.modal__fields}>
           <label className={styles.modal__field}>
@@ -73,8 +76,8 @@ const UploadCoordsForm = (props: IProps) => {
             Close
           </button>
         </div>
-      </div>
-    </div>
+      </Fragment>
+    </Modal>
   );
 };
 
