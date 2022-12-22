@@ -43,15 +43,20 @@ class UserService {
     }
   }
 
-	async getUsersRating() {
-		try {
-      const response = await fetch(`/api/user/rating`)
+  async getUserProfile(userId: number) {
+    try {
+      const response = await fetch(`${process.env.ABS_URL}/api/user/${userId}`);
+
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
       return await response.json();
     } catch (error) {
       const err = error as Error;
       notification("error", err.message);
+      return null;
     }
-	}
+  }
 }
 
 export default new UserService();

@@ -1,0 +1,22 @@
+.card {
+	background-color: #eee;
+	display: flex;
+	flex-direction: column;
+	padding: 10px 0;
+
+	&__img {
+		object-fit: contain;
+		width: 100%;
+	}
+
+	&__info {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		justify-content: center;
+	}
+
+	&__like {
+		cursor: pointer;
+	}
+}

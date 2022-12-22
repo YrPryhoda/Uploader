@@ -15,7 +15,15 @@ class UserService {
 
   async findByUnique(field: { [key: string]: string | number }) {
     const prisma = new PrismaClient();
-    const data = await prisma.user.findUnique({ where: field });
+    const data = await prisma.user.findUnique({
+      where: field,
+      include: {
+        images: {
+          include: { like: true }
+        },
+        likes: true
+      }
+    });
     await prisma.$disconnect();
     return data;
   }

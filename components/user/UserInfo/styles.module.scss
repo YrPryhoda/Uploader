@@ -1,0 +1,39 @@
+.header {
+	box-sizing: border-box;
+	margin-top: 32px;
+	padding: 32px;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	background-color: rgb(144, 37, 37);
+	border-radius: 10px;
+
+	&__content {
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 50px;
+
+		@media screen and (max-width: 668px) {
+			gap: 0;
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+		}
+	}
+
+	&__avatar {
+		background-color: rgb(252, 252, 252);
+		padding: 24px;
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		min-width: 196px;
+	}
+
+	&__info {
+		padding: 0 30px;
+		color: #fff;
+	}
+}

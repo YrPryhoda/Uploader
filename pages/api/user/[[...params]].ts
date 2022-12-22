@@ -1,4 +1,3 @@
-import { NotFoundError } from "@prisma/client/runtime";
 import * as nextAuth from "next-auth";
 import {
   BadRequestException,
@@ -14,7 +13,6 @@ import {
 } from "next-api-decorators";
 
 import { ChangePasswordUserDto } from "./../../../dto/user/change-password.user.dto";
-import { UserRatingResponseDto } from "../../../dto/user/userRating.response.dto";
 import { ProtectedApiDecorator } from "../../../middleware/protectedApiDecotator";
 import { UserResponseDto } from "../../../dto/user/user.response.dto";
 import { CreateUserDto } from "./../../../dto/user/create.user.dto";
@@ -28,36 +26,36 @@ class UserHandler {
       return await userService.all();
     } catch (error) {
       const err = error as Error;
-      return new InternalServerErrorException(err.message);
+      throw new InternalServerErrorException(err.message);
     }
   }
 
-  @Get("/rating")
-  async usersRating() {
-    try {
-      const users = await userService.rating();
-      return users;
-      // return users.length
-      //   ? users.map((user) => new UserRatingResponseDto(user))
-      //   : [];
-    } catch (error) {
-      const err = error as Error;
-      return new BadRequestException(err.message);
-    }
-  }
+  // @Get("/rating")
+  // async usersRating() {
+  //   try {
+  //     const users = await userService.rating();
+  //     return users;
+  //     // return users.length
+  //     //   ? users.map((user) => new UserRatingResponseDto(user))
+  //     //   : [];
+  //   } catch (error) {
+  //     const err = error as Error;
+  //     return new BadRequestException(err.message);
+  //   }
+  // }
 
-  @ProtectedApiDecorator()
+  //@ProtectedApiDecorator()
   @Get("/:id")
   async user(@Param("id", ParseNumberPipe) id: number) {
     try {
       const user = await userService.findByUnique({ id });
       if (!user) {
-        throw new NotFoundError("Not found");
+        throw Error("Not found");
       }
       return new UserResponseDto(user);
     } catch (error) {
       const err = error as Error;
-      return new BadRequestException(err.message);
+      throw new BadRequestException(err.message);
     }
   }
 

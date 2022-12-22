@@ -1,36 +1,26 @@
 import { GetStaticProps } from "next";
-import Image from "next/image";
-import React, { Fragment } from "react";
+import React, { useEffect } from "react";
 import ImagesList from "../../components/ImagesList";
-import { generateImagePath } from "../../lib/image/generateImagePath";
-
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { loadGalleryPerPage } from "../../store/slices/images/images.actions";
+import { imagesSliceSelector } from "../../store/slices/images/images.slice";
+import { useRouter } from "next/router";
 interface IProps {
   ratingList: IImage[];
 }
 const ImageRating = ({ ratingList }: IProps) => {
-  return (
-    <ImagesList images={ratingList} />
-    // <Fragment>
-    //   {ratingList.map((el) => {
-    //     const imgPath = generateImagePath(el);
-
-    //     return (
-    //       <div key={el.id}>
-    //         <h2>{el.title}</h2>
-    //         <Image
-    //           alt={el.title}
-    //           loader={imgPath.loader}
-    //           src={imgPath.src}
-    //           width={300}
-    //           height={300}
-    //         />
-    //         <p>{el.user.email}</p>
-    //         <p>{el.like?.length}</p>
-    //       </div>
-    //     );
-    //   })}
-    // </Fragment>
-  );
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { images } = useAppSelector(imagesSliceSelector);
+  const handlerImageClick = (image: IImage) => {
+    router.push(`/user/${image.user.id}`);
+  };
+  useEffect(() => {
+    dispatch(
+      loadGalleryPerPage({ images: ratingList, total: ratingList.length })
+    );
+  }, [dispatch, ratingList]);
+  return <ImagesList images={images} onImgClick={handlerImageClick} />;
 };
 
 export default ImageRating;

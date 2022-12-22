@@ -5,9 +5,9 @@ interface IImage {
   createdAt: Date;
   userId: number;
   like: ILike[];
-  user: IUser;
-  lat?: number;
-  lng?: number;
+  user?: IUser;
+  lat: number | null;
+  lng: number | null;
 }
 
 interface IUser {
@@ -17,6 +17,7 @@ interface IUser {
   email: string;
   name: string;
   likes?: ILike[];
+  images?: IImage[];
 }
 
 interface IUserRating extends IUser {

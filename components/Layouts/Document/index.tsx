@@ -13,12 +13,15 @@ import styles from "./styles.module.scss";
 import { store } from "../../../store";
 import GetProfile from "../GetProfile";
 import Header from "../../Header";
+import { cronRegister } from "../../../lib/cron";
 
 interface IProps {
   children: React.ReactElement;
 }
 
 const Layout = (props: IProps) => {
+  cronRegister();
+
   NProgress.configure({
     showSpinner: false
   });
