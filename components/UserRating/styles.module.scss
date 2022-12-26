@@ -1,0 +1,33 @@
+.rating {
+	margin-top: 32px;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-width: 620px;
+
+	&__num {
+		margin-right: 10px;
+	}
+
+	&__user,
+	&__title {
+		display: flex;
+		align-items: center;
+	}
+
+	&__user {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		margin-bottom: 24px;
+		background-color: #eee;
+	}
+
+	&__name {
+		margin-left: 32px;
+	}
+
+	&__likes {
+		margin-left: 32px;
+	}
+}

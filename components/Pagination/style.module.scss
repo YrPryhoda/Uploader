@@ -15,6 +15,17 @@
 		border: 1px solid #000;
 	}
 
+	&__skip {
+		font-weight: bold;
+		letter-spacing: 3px;
+		font-size: 1rem;
+		display: flex;
+		width: 32px;
+		height: 32px;
+		align-items: flex-end;
+		justify-content: center;
+	}
+
 	.active {
 		background-color: #a9c4ff;
 	}

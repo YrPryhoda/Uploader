@@ -13,7 +13,9 @@ export class UserResponseDto {
     this.name = user.name;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
-    this.images = user.images;
+    if (user.images) {
+      this.images = user.images;
+    }
     this.likes = user.likes;
   }
 }

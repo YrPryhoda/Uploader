@@ -45,6 +45,30 @@ const Pagination = ({ total, href }: IProps) => {
   const paginationList = Array(pagesCount)
     .fill(null)
     .map((_, index) => {
+      if (pagesCount > 7) {
+        if (index === 0 || index + 1 === pagesCount) {
+          return paginationItem(index + 1);
+        }
+        if (page === index + 1) {
+          return paginationItem(index + 1);
+        }
+
+        if (index + 2 === page || index === page) {
+          return paginationItem(index + 1);
+        }
+
+        if (index + 3 === page || index - 1 === page) {
+          return (
+            <span className={styles.container__skip} key={index + 1}>
+              ...
+            </span>
+          );
+        }
+
+        if (index > 1 && index < pagesCount - 2) {
+          return null;
+        }
+      }
       return paginationItem(index + 1);
     });
 

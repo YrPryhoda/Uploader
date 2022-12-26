@@ -1,5 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
 import { loadGalleryPerPage } from "../../store/slices/images/images.actions";
 import { imagesSliceSelector } from "../../store/slices/images/images.slice";
@@ -9,7 +10,6 @@ import { notification } from "../../lib/notifications";
 import ImagesList from "../../components/ImagesList";
 import Pagination from "../../components/Pagination";
 import styles from "../../styles/Page.module.css";
-import Link from "next/link";
 
 interface IProps {
   images: IImage[];
@@ -49,7 +49,10 @@ const Images = ({ images, rows }: IProps) => {
     <div className={styles.document}>
       <nav className={styles.subNav}>
         <Link href={"/images/rating"} className={styles.subNav__link}>
-          Rating
+          Images Rating
+        </Link>
+        <Link href={"/user/rating"} className={styles.subNav__link}>
+          Users Rating
         </Link>
       </nav>
       <h2>Images Gallery</h2>

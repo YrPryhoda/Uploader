@@ -6,11 +6,11 @@ import {
   deleteImage,
   likeImage
 } from "../../store/slices/images/images.actions";
+import { generateImagePath } from "../../lib/image/generateImagePath";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { notification } from "../../lib/notifications";
 import styles from "./styles.module.scss";
 import Spinner from "../Spinner";
-import { generateImagePath } from "../../lib/image/generateImagePath";
 
 interface IProps {
   images: IImage[];

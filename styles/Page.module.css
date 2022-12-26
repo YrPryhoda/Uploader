@@ -23,5 +23,34 @@
 .subNav {
 	margin: 20px 0;
 	display: flex;
+	gap: 40px;
 	width: 100%;
+}
+
+.title {
+	text-align: center;
+}
+
+.backWrapper {
+	width: 100%;
+}
+
+.grid_container {
+	min-width: 700px;
+	margin-top: 32px;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(200px, 1fr));
+	column-gap: 30px;
+	row-gap: 30px;
+}
+
+@media screen and (max-width: 1240px) {
+	.grid_container {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+@media screen and (max-width: 992px) {
+	.grid_container {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }

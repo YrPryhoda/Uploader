@@ -21,9 +21,7 @@ interface IUser {
 }
 
 interface IUserRating extends IUser {
-  _count: {
-    likes: number;
-  };
+  _likesCount: number;
 }
 
 interface ILike {

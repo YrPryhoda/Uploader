@@ -1,31 +1,43 @@
 import { GetStaticProps } from "next";
 import React, { useEffect } from "react";
-import ImagesList from "../../components/ImagesList";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+
 import { loadGalleryPerPage } from "../../store/slices/images/images.actions";
 import { imagesSliceSelector } from "../../store/slices/images/images.slice";
-import { useRouter } from "next/router";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import ImageCard from "../../components/common/ImageCard";
+import BackBtn from "../../components/common/BackBtn";
+import styles from "../../styles/Page.module.css";
 interface IProps {
   ratingList: IImage[];
 }
 const ImageRating = ({ ratingList }: IProps) => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const { images } = useAppSelector(imagesSliceSelector);
-  const handlerImageClick = (image: IImage) => {
-    router.push(`/user/${image.user.id}`);
-  };
+
   useEffect(() => {
     dispatch(
       loadGalleryPerPage({ images: ratingList, total: ratingList.length })
     );
   }, [dispatch, ratingList]);
-  return <ImagesList images={images} onImgClick={handlerImageClick} />;
+
+  return (
+    <div>
+      <BackBtn />
+      <div>
+        <h2 className={styles.title}>Top 10 images rating</h2>
+      </div>
+      <div className={styles.grid_container}>
+        {images.map((image) => {
+          return <ImageCard key={image.id} image={image} />;
+        })}
+      </div>
+    </div>
+  );
 };
 
 export default ImageRating;
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   try {
     const response = await fetch(`${process.env.ABS_URL}/api/reaction/rating`);
     const ratingList = await response.json();

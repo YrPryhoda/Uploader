@@ -8,9 +8,7 @@
 	min-width: calc(768px - 64px);
 	width: 100%;
 	flex-wrap: wrap;
-	@media screen and (max-width: 1239px) {
-		
-	}
+
 	&:last-child {
 		justify-self: self-start;
 	}
@@ -28,6 +26,14 @@
 	align-items: center;
 	flex-shrink: 1;
 	max-width: calc(100vw / 5);
+
+	@media screen and (max-width: 992px) {
+		max-width: 100%;
+	}
+
+	@media screen and (max-width: 768px) {
+		width: 100%;
+	}
 
 	&__details {
 		box-sizing: border-box;

@@ -24,7 +24,7 @@ const UserProfile = ({ user }: IProps) => {
 
   if (!searchUser) {
     return <Spinner />;
-  }
+  } 
 
   return (
     <div className={styles.document}>

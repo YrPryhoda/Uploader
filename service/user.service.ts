@@ -1,9 +1,13 @@
 import { NotFoundError } from "@prisma/client/runtime";
-import { PrismaClient } from "@prisma/client";
+import { Like, PrismaClient, User, Image } from "@prisma/client";
 import { BadRequestException } from "next-api-decorators";
 
 import { ChangePasswordUserDto } from "./../dto/user/change-password.user.dto";
 import { CreateUserDto } from "./../dto/user/create.user.dto";
+
+type UserRating = Omit<IUser, "images"> & {
+  images: (IImage & { _count: { like: number }; like: Like[] })[];
+};
 
 class UserService {
   async all() {
@@ -39,6 +43,49 @@ class UserService {
     const createdUser = await prisma.user.create({ data: input });
     await prisma.$disconnect();
     return createdUser;
+  }
+
+  async rating() {
+    const prisma = new PrismaClient();
+    try {
+      const users = await prisma.user.findMany({
+        include: {
+          images: {
+            include: {
+              like: true,
+              _count: {
+                select: { like: true }
+              }
+            }
+          }
+        }
+      });
+
+      const countUserLikes = (user: UserRating) => {
+        return user.images.reduce((total, curr) => {
+          total += curr._count.like;
+          return total;
+        }, 0);
+      };
+
+      const rating: IUserRating[] = users.reduce(
+        (total: IUserRating[], current) => {
+          const likes = countUserLikes(current);
+          const updatedUser = { ...current, _likesCount: likes || 0 };
+          total.push(updatedUser);
+          return total;
+        },
+        []
+      );
+
+      rating.sort((u1, u2) => u2._likesCount - u1._likesCount);
+      rating.length = 10;
+
+      return rating;
+    } catch (error) {
+    } finally {
+      await prisma.$disconnect();
+    }
   }
 
   async login(email: string, password: string) {

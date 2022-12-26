@@ -1,3 +1,4 @@
+import { UserRatingResponseDto } from "./../../../dto/user/userRating.response.dto";
 import * as nextAuth from "next-auth";
 import {
   BadRequestException,
@@ -26,23 +27,21 @@ class UserHandler {
       return await userService.all();
     } catch (error) {
       const err = error as Error;
-      throw new InternalServerErrorException(err.message);
+      return new InternalServerErrorException(err.message);
     }
   }
 
-  // @Get("/rating")
-  // async usersRating() {
-  //   try {
-  //     const users = await userService.rating();
-  //     return users;
-  //     // return users.length
-  //     //   ? users.map((user) => new UserRatingResponseDto(user))
-  //     //   : [];
-  //   } catch (error) {
-  //     const err = error as Error;
-  //     return new BadRequestException(err.message);
-  //   }
-  // }
+  @Get("/rating")
+  async usersRating() {
+    try {
+      const users: IUserRating[] = await userService.rating();
+
+      return users.map((user) => new UserRatingResponseDto(user));
+    } catch (error) {
+      const err = error as Error;
+      throw new BadRequestException(err.message);
+    }
+  }
 
   //@ProtectedApiDecorator()
   @Get("/:id")
