@@ -1,7 +1,10 @@
 import { GetStaticProps } from "next";
 import React, { useEffect } from "react";
 
-import { loadGalleryPerPage } from "../../store/slices/images/images.actions";
+import {
+  likeImage,
+  loadGalleryPerPage
+} from "../../store/slices/images/images.actions";
 import { imagesSliceSelector } from "../../store/slices/images/images.slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import ImageCard from "../../components/common/ImageCard";
@@ -28,7 +31,14 @@ const ImageRating = ({ ratingList }: IProps) => {
       </div>
       <div className={styles.grid_container}>
         {images.map((image) => {
-          return <ImageCard key={image.id} image={image} />;
+          return (
+            <ImageCard
+              key={image.id}
+              image={image}
+              onLike={likeImage}
+              handlerClick={() => {}}
+            />
+          );
         })}
       </div>
     </div>

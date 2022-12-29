@@ -1,6 +1,8 @@
+import { AsyncThunkAction } from "@reduxjs/toolkit";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 import {
   deleteImage,
@@ -9,15 +11,24 @@ import {
 import { generateImagePath } from "../../../lib/image/generateImagePath";
 import { notification } from "../../../lib/notifications";
 import { useAppDispatch } from "../../../store/hooks";
+import { formatDate } from "../../../lib/formatDate";
 import styles from "./styles.module.scss";
-import Link from "next/link";
 
 interface IProps {
   image: IImage;
   handlerClick?: (arg: IImage) => void;
+  withImgDate?: boolean;
+  onLike: (options: {
+    imageId: number;
+  }) => AsyncThunkAction<ILike, { imageId: number }, any>;
 }
 
-const ImageCard = ({ image, handlerClick }: IProps) => {
+const ImageCard = ({
+  image,
+  handlerClick,
+  onLike = likeImage,
+  withImgDate = false
+}: IProps) => {
   const path = generateImagePath(image);
   const { data, status } = useSession();
   const dispatch = useAppDispatch();
@@ -35,7 +46,7 @@ const ImageCard = ({ image, handlerClick }: IProps) => {
       return;
     }
 
-    dispatch(likeImage({ imageId }));
+    dispatch(onLike({ imageId }));
   };
 
   const deleteBtnJSX = (imgId: number, userId: number) => {
@@ -60,21 +71,17 @@ const ImageCard = ({ image, handlerClick }: IProps) => {
                 height={48}
                 className={styles.header__avatar}
                 alt={image.user.name}
-                src={"/profile.svg"}
+                src={
+                  image.user.avatar
+                    ? `/${image.userId}/${image.user.avatar}`
+                    : "/profile.svg"
+                }
               />
             </div>
             <h5 className={styles.header__title}> {image.user?.name}</h5>
           </div>
           <div>
-            <p className={styles.header__date}>
-              {new Date(image.createdAt).toLocaleString("uk-UA", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-              })}
-            </p>
+            <p className={styles.header__date}>{formatDate(image.createdAt)}</p>
           </div>
         </div>
       </Link>
@@ -83,19 +90,21 @@ const ImageCard = ({ image, handlerClick }: IProps) => {
 
   return (
     <div className={styles.container}>
-      <div
-        key={image.id}
-        className={styles.card}
-        onClick={() => (handlerClick ? handlerClick(image) : null)}
-      >
+      <div key={image.id} className={styles.card}>
         {cardHeaderJSX(image)}
+        {withImgDate && (
+          <p className={styles.card__date}>{formatDate(image.createdAt)}</p>
+        )}
         <Image
+          onClick={() => (handlerClick ? handlerClick(image) : null)}
           alt={image.title}
           src={path.src}
           loader={path.loader}
           priority
-          width={200}
-          height={200}
+          width={300}
+          height={300}
+          placeholder="blur"
+          blurDataURL={"/blur.jpg"}
           className={styles.card__img}
         />
         <div className={styles.card__info}>
@@ -108,7 +117,7 @@ const ImageCard = ({ image, handlerClick }: IProps) => {
               className={styles.card__like}
               onClick={() => handlerLike(image.id)}
             />
-            <p>{image.like ? image.like.length : null}</p>
+            <p>{image.like && image.like.length ? image.like.length : null}</p>
           </div>
           {deleteBtnJSX(image.id, image.userId)}
         </div>

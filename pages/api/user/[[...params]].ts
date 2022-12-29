@@ -1,3 +1,4 @@
+import type { AuthorizedNextApiRequest } from "next-auth";
 import { UserRatingResponseDto } from "./../../../dto/user/userRating.response.dto";
 import * as nextAuth from "next-auth";
 import {
@@ -18,6 +19,8 @@ import { ProtectedApiDecorator } from "../../../middleware/protectedApiDecotator
 import { UserResponseDto } from "../../../dto/user/user.response.dto";
 import { CreateUserDto } from "./../../../dto/user/create.user.dto";
 import userService from "../../../service/user.service";
+import { getFormidable } from "../../../lib/formidable";
+import path from "path";
 
 class UserHandler {
   @ProtectedApiDecorator()
@@ -43,7 +46,6 @@ class UserHandler {
     }
   }
 
-  //@ProtectedApiDecorator()
   @Get("/:id")
   async user(@Param("id", ParseNumberPipe) id: number) {
     try {

@@ -1,5 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import React from "react";
 
 import ProfileForm from "../../components/ProfileForm";
@@ -10,9 +11,16 @@ interface IProps {
 }
 
 const Profile = ({ user }: IProps) => {
+  const router = useRouter();
+  const handlerProfileView = () => {
+    router.push(`/user/${user.id}`);
+  };
   return (
     <div className={styles.document}>
       <h2>Hello, {user.name}</h2>
+      <button onClick={handlerProfileView} className={styles.btn}>
+        Show in geleral view
+      </button>
       <ProfileForm user={user} />
     </div>
   );

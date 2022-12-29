@@ -23,3 +23,17 @@ export const changePassword = createAsyncThunk<IUser, IPasswordInput>(
   }
 );
 
+export const uploadAvatar = createAsyncThunk<IUser, FormData>(
+  `${userPrefix}/upload-avatar`,
+  async (avatar, options) => {
+    try {
+      const updatedUser = await userService.uploadAvatar(avatar);
+      notification("success", "Avatar updated successfully");
+      return updatedUser;
+    } catch (error) {
+      console.log(error, "ERROR");
+      throw options.rejectWithValue({ error: error as SerializedError });
+    }
+  }
+);
+

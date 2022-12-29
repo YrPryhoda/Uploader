@@ -17,9 +17,12 @@ const UserRating = ({ users }: IProps) => {
                 <div className={styles.rating__num}>{index + 1}</div>
                 <Image
                   alt={user.name}
-                  src={"/profile.svg"}
+                  src={
+                    user.avatar ? `/${user.id}/${user.avatar}` : "/profile.svg"
+                  }
                   width={64}
                   height={64}
+									className={styles.rating__avatar}
                 />
                 <h3 className={styles.rating__name}>{user.name}</h3>
               </div>

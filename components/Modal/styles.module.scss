@@ -6,7 +6,10 @@
 	left: 0;
 	top: 0;
 	width: 100%;
+	min-width: 770px;
 	height: 100%;
+	min-height: 100vh;
+	bottom: auto;
 	background-color: rgba(0, 0, 0, 0.732);
 
 	&__form {

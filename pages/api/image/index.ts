@@ -1,3 +1,4 @@
+import { ImageResponseDto } from "./../../../dto/image/image.response.dto";
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { getSession } from "next-auth/react";
@@ -83,9 +84,10 @@ export default async function handler(
       }
 
       const { rows, images } = await imageService.all(numPage);
+      const imagesDto = images.map((el) => new ImageResponseDto(el));
 
       await prisma.$disconnect();
-      res.status(200).json({ images, rows });
+      res.status(200).json({ images: imagesDto, rows });
     } catch (error) {
       console.log(error, "ERR");
       return res.status(403).json({ msg: "Some errors" });

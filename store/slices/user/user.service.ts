@@ -57,6 +57,26 @@ class UserService {
       return null;
     }
   }
+
+  async uploadAvatar(avatar: FormData) {
+    try {
+      const response = await fetch(`/api/upload/avatar`, {
+        method: "POST",
+        credentials: "include",
+        body: avatar
+      });
+
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+
+      return await response.json();
+    } catch (error) {
+      const err = error as Error;
+      notification("error", err.message);
+      throw Error(err.message);
+    }
+  }
 }
 
 export default new UserService();

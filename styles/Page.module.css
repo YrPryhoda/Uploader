@@ -9,7 +9,7 @@
 }
 
 .map_container {
-	margin-top: 32px;
+	margin-top: 12px;
 	height: 50vh;
 }
 
@@ -18,13 +18,6 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-}
-
-.subNav {
-	margin: 20px 0;
-	display: flex;
-	gap: 40px;
-	width: 100%;
 }
 
 .title {
@@ -37,7 +30,7 @@
 
 .grid_container {
 	min-width: 700px;
-	margin-top: 32px;
+	margin-top: 12px;
 	display: grid;
 	grid-template-columns: repeat(4, minmax(200px, 1fr));
 	column-gap: 30px;
@@ -53,4 +46,11 @@
 	.grid_container {
 		grid-template-columns: repeat(2, 1fr);
 	}
+}
+
+.btn {
+	cursor: pointer;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	padding: 10px 20px;
 }

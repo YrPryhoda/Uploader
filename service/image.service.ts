@@ -12,7 +12,7 @@ class ImageService {
       prisma.image.findMany({
         skip: offset,
         take,
-        include: { like: true },
+        include: { like: true, user: true },
         orderBy: {
           createdAt: "desc"
         }
@@ -75,7 +75,7 @@ class ImageService {
         where,
         skip: offset,
         take,
-        include: { like: true },
+        include: { like: true, user: true },
         orderBy: {
           createdAt: "desc"
         }

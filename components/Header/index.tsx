@@ -37,9 +37,6 @@ const Header = () => {
         </Link>
       </div>
       <nav className={styles.header__nav}>
-        <Link className={styles.header__link} href={"/"}>
-          Main
-        </Link>
         <Link className={styles.header__link} href={"/images/1"}>
           Images
         </Link>

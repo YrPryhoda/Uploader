@@ -1,4 +1,4 @@
-import { changePassword, setProfile } from "./user.actions";
+import { changePassword, setProfile, uploadAvatar } from "./user.actions";
 import { AppState } from "./../../index";
 import { userPrefix } from "./user.prefix";
 import { createSlice, SerializedError } from "@reduxjs/toolkit";
@@ -35,6 +35,19 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(uploadAvatar.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(uploadAvatar.fulfilled, (state, action) => {
+        state.loading = false;
+        if (state.user) {
+          state.user = { ...state.user, avatar: action.payload.avatar };
+        }
+      })
+      .addCase(uploadAvatar.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       })

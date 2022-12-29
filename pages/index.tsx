@@ -62,14 +62,22 @@ const Home = (props: IProps) => {
           showModal={showModal}
         />
       </div>
-      <ImagesList images={images} />
-      <div className={styles.paginationBlock}>
-        {props.total ? (
-          <Pagination total={props.total} href={"?page="} />
-        ) : null}
+      <div>
+        <h2 className={styles.title}>My uploaded images</h2>
+        <ImagesList images={images} />
+        <div className={styles.paginationBlock}>
+          {props.total ? (
+            <Pagination total={props.total} href={"?page="} />
+          ) : null}
+        </div>
       </div>
+
       {modal && (
-        <UploadCoordsForm isOpen={modal} onSubmit={submitHandler} handlerClose={showModal} />
+        <UploadCoordsForm
+          isOpen={modal}
+          onSubmit={submitHandler}
+          handlerClose={showModal}
+        />
       )}
     </div>
   );

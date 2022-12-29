@@ -1,7 +1,8 @@
-import { getUserAccount } from "./search.actions";
+import { getUserAccount, likeProfileImage } from "./search.actions";
 import { SerializedError, createSlice } from "@reduxjs/toolkit";
 import { AppState } from "../..";
 import { modulePrefix } from "./search.prefix";
+import { uploadAvatar } from "../user/user.actions";
 
 interface InitialState {
   error: SerializedError | null;
@@ -20,10 +21,54 @@ const searchSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) =>
-    builder.addCase(getUserAccount, (state, action) => {
-      state.searchUser = action.payload;
-      state.error = null;
-    })
+    builder
+      .addCase(getUserAccount, (state, action) => {
+        state.searchUser = action.payload;
+        state.error = null;
+      })
+      .addCase(likeProfileImage.fulfilled, (state, action) => {
+        const { imageId, userId } = action.payload;
+
+        if (!state.searchUser?.images) {
+          return;
+        }
+
+        const imageIndex = state.searchUser.images.findIndex(
+          (el) => el.id === imageId
+        );
+
+        if (imageIndex < 0) {
+          return;
+        }
+
+        const modifiedImageLikes = state.searchUser.images[imageIndex].like;
+        const existLikeIndex = modifiedImageLikes.findIndex(
+          (el) => el.userId === userId
+        );
+
+        if (existLikeIndex < 0) {
+          state.searchUser.images[imageIndex].like = [
+            ...modifiedImageLikes,
+            action.payload
+          ];
+        } else {
+          state.searchUser.images[imageIndex].like = modifiedImageLikes.filter(
+            (el) => el.userId !== userId
+          );
+        }
+      })
+      .addCase(uploadAvatar.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(uploadAvatar.fulfilled, (state, action) => {
+        state.loading = false;
+        if (state.searchUser) {
+          state.searchUser = {
+            ...state.searchUser,
+            avatar: action.payload.avatar
+          };
+        }
+      })
 });
 
 export default searchSlice;

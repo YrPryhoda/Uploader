@@ -2,17 +2,18 @@ import path from "path";
 import { access, mkdir } from "fs/promises";
 import formidable, { Part } from "formidable";
 
-export const getFormidable = async () => {
-  const imagesFolderPath = path.resolve(process.cwd(), "public", "imagesDB");
+const imagesFolderPath = path.resolve(process.cwd(), "public", "imagesDB");
+
+export const getFormidable = async (uploadDir: string = imagesFolderPath) => {
   try {
-    await access(imagesFolderPath);
+    await access(uploadDir);
   } catch (error) {
-    await mkdir(imagesFolderPath);
+    await mkdir(uploadDir);
   }
 
   const config = {
     multiples: true,
-    uploadDir: imagesFolderPath,
+    uploadDir: uploadDir,
     maxFileSize: 10 * 1024 * 1024,
     keepExtensions: true,
     filter: ({ mimetype }: Part) => !!(mimetype && mimetype.includes("image")),

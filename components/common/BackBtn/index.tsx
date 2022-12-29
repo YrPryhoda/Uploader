@@ -10,7 +10,7 @@ const BackBtn = () => {
 
   return (
     <button className={styles.btn} onClick={onClick}>
-      -- Back --
+      Return
     </button>
   );
 };

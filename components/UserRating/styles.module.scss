@@ -5,6 +5,12 @@
 	flex-direction: column;
 	min-width: 620px;
 
+	&__avatar {
+		object-fit: cover;
+		border-radius: 50%;
+		border: 2px solid #eee;
+	}
+
 	&__num {
 		margin-right: 10px;
 	}

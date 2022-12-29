@@ -13,6 +13,7 @@ import styles from "./styles.module.scss";
 import { store } from "../../../store";
 import GetProfile from "../GetProfile";
 import Header from "../../Header";
+import DropDownMenu from "../../common/DropDownMenu";
 
 interface IProps {
   children: React.ReactElement;
@@ -45,6 +46,10 @@ const Layout = (props: IProps) => {
         />
 
         <Header />
+        <div className={styles.subnav}>
+          <DropDownMenu />
+        </div>
+
         <div className={styles.document}>
           <GetProfile>{props.children}</GetProfile>
         </div>

@@ -1,3 +1,4 @@
+import { ImageResponseDto } from "./../../../dto/image/image.response.dto";
 import {
   BadRequestException,
   createHandler,
@@ -13,13 +14,15 @@ class CoordinatesHandler {
   async getByCoordinates(@Req() req: NextApiRequest) {
     try {
       const { lat, lng } = req.query;
-			const page = Number(req.query.page) || 1;
+      const page = Number(req.query.page) || 1;
       const parsedCoordinates = { lat: Number(lat), lng: Number(lng), page };
       if (isNaN(parsedCoordinates.lat) || isNaN(parsedCoordinates.lng)) {
         throw new BadRequestException("Invalid coordinates");
       }
 
-      return await imageService.getByCoordinates(parsedCoordinates);
+      const data = await imageService.getByCoordinates(parsedCoordinates);
+      const imagesDto = data.images.map((el) => new ImageResponseDto(el));
+      return { rows: data.rows, images: imagesDto };
     } catch (error) {
       const err = error as Error;
       return new BadRequestException(err.message);

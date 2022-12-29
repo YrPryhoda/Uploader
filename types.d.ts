@@ -18,6 +18,7 @@ interface IUser {
   name: string;
   likes?: ILike[];
   images?: IImage[];
+  avatar: string | null;
 }
 
 interface IUserRating extends IUser {

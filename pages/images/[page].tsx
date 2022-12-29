@@ -1,6 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 
 import { loadGalleryPerPage } from "../../store/slices/images/images.actions";
 import { imagesSliceSelector } from "../../store/slices/images/images.slice";
@@ -47,14 +46,6 @@ const Images = ({ images, rows }: IProps) => {
 
   return (
     <div className={styles.document}>
-      <nav className={styles.subNav}>
-        <Link href={"/images/rating"} className={styles.subNav__link}>
-          Images Rating
-        </Link>
-        <Link href={"/user/rating"} className={styles.subNav__link}>
-          Users Rating
-        </Link>
-      </nav>
       <h2>Images Gallery</h2>
       {images.length ? (
         <p>
@@ -64,7 +55,7 @@ const Images = ({ images, rows }: IProps) => {
 
       <ImagesList images={storeImages} onImgClick={handlerImageClick} />
       {rows ? <Pagination total={galleryTotal} href={"/images/"} /> : null}
-      {renderSelectedImgLocation}
+      {renderSelectedImgLocation} 
     </div>
   );
 };

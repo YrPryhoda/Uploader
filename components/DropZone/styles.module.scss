@@ -1,7 +1,7 @@
 $border: rgb(146, 46, 146);
 
 .drop {
-	margin-top: 30px;
+	margin-top: 12px;
 	border: 3px solid $border;
 	flex-basis: 100%;
 	padding: 20px;
@@ -21,38 +21,10 @@ $border: rgb(146, 46, 146);
 	&__input {
 		display: none;
 	}
-
-	.dragPlaceholder {
-		cursor: pointer;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		z-index: -2;
-		align-items: center;
-		justify-content: center;
-		background: repeating-linear-gradient(
-			135deg,
-			transparent,
-			transparent 10px,
-			rgba(255, 149, 0, 0.475) 15px,
-			rgba(255, 187, 0, 0.601) 20px
-		);
-	}
 }
 
 .drag {
-	display: none;
-}
-
-.placeholder {
-	background: repeating-linear-gradient(
-		135deg,
-		transparent,
-		transparent 10px,
-		rgba(255, 149, 0, 0.475) 15px,
-		rgba(255, 187, 0, 0.601) 20px
-	);
+	background-color: rgba(203, 69, 203, 0.166);
 }
 
 .btnInputBlock {

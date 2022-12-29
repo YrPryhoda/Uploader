@@ -1,13 +1,14 @@
+import { useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import React, { useEffect } from "react";
 
 import { searchSliceSelector } from "../../store/slices/search/search.slice";
+import { getUserAccount } from "../../store/slices/search/search.actions";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import userService from "../../store/slices/user/user.service";
 import UserGallery from "../../components/user/UserGallery";
 import UserInfo from "../../components/user/UserInfo";
 import styles from "../../styles/Page.module.css";
-import { getUserAccount } from "../../store/slices/search/search.actions";
 import Spinner from "../../components/Spinner";
 
 interface IProps {
@@ -17,14 +18,15 @@ interface IProps {
 const UserProfile = ({ user }: IProps) => {
   const dispatch = useAppDispatch();
   const { searchUser } = useAppSelector(searchSliceSelector);
+  const { status } = useSession();
 
   useEffect(() => {
     dispatch(getUserAccount(user));
   }, [dispatch, user]);
 
-  if (!searchUser) {
+  if (!searchUser || status === "loading") {
     return <Spinner />;
-  } 
+  }
 
   return (
     <div className={styles.document}>

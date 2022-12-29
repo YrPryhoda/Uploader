@@ -96,14 +96,13 @@ const DropZone = (props: IProps) => {
 
   return (
     <div
-      className={`${styles.drop} ${drag ? styles.placeholder : ""}`}
+      className={`${styles.drop} ${drag ? styles.drag : ""}`}
       onDragEnter={onDragEnterHandler}
       onDragOver={onDragEnterHandler}
       onDragLeave={onDragLeaveHandler}
       onDrop={onDropHandler}
     >
-      {drag && <h3>Drop it here</h3>}
-      <div className={`${styles.drop__init} ${drag ? styles.drag : ""}`}>
+      <div className={styles.drop__init}>
         {customInputJSX}
         <input
           disabled={!isAuthorized}

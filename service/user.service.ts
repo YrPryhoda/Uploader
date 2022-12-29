@@ -4,6 +4,7 @@ import { BadRequestException } from "next-api-decorators";
 
 import { ChangePasswordUserDto } from "./../dto/user/change-password.user.dto";
 import { CreateUserDto } from "./../dto/user/create.user.dto";
+import { DeepPartial } from "@reduxjs/toolkit";
 
 type UserRating = Omit<IUser, "images"> & {
   images: (IImage & { _count: { like: number }; like: Like[] })[];
@@ -23,6 +24,9 @@ class UserService {
       where: field,
       include: {
         images: {
+          orderBy: {
+            createdAt: "desc"
+          },
           include: { like: true }
         },
         likes: true
@@ -43,6 +47,20 @@ class UserService {
     const createdUser = await prisma.user.create({ data: input });
     await prisma.$disconnect();
     return createdUser;
+  }
+
+  async update(id: number, field: Partial<User>) {
+    const prisma = new PrismaClient();
+    const updatedUser = await prisma.user.update({
+      where: {
+        id
+      },
+      data: {
+        ...field
+      }
+    });
+    await prisma.$disconnect();
+    return updatedUser;
   }
 
   async rating() {
@@ -82,7 +100,6 @@ class UserService {
       rating.length = 10;
 
       return rating;
-    } catch (error) {
     } finally {
       await prisma.$disconnect();
     }

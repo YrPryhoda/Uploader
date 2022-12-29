@@ -1,7 +1,8 @@
 import React from "react";
 
-import styles from "./styles.module.scss";
+import { likeProfileImage } from "../../../store/slices/search/search.actions";
 import ImageCard from "../../common/ImageCard";
+import styles from "./styles.module.scss";
 
 interface IProps {
   user: IUser;
@@ -13,7 +14,12 @@ const UserGallery = ({ user }: IProps) => {
       <h2 className={styles.title}>User gallery</h2>
       <div className={styles.container}>
         {user.images.map((img) => (
-          <ImageCard key={img.id} image={img} />
+          <ImageCard
+            key={img.id}
+            image={img}
+            withImgDate={true}
+            onLike={likeProfileImage}
+          />
         ))}
       </div>
     </div>

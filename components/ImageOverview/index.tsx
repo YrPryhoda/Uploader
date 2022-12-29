@@ -20,31 +20,25 @@ const ImageOverview = (props: IProps) => {
     </h4>
   );
 
-  const renderImgs = Array.isArray(props.image) ? (
-    props.image.map((el) => {
-      const imgPath = generateImagePath(el);
+  const renderImgJSX = (img: IImage) => {
+    const imgPath = generateImagePath(img);
 
-      return (
-        <Image
-          key={el.id}
-          className={styles.section__img}
-          src={imgPath.src}
-          loader={imgPath.loader}
-          alt={el.title}
-          width={500}
-          height={500}
-        />
-      );
-    })
-  ) : (
-    <Image
-      className={styles.section__img}
-      src={`/imagesDB/${props.image.title}`}
-      alt={props.image.title}
-      width={500}
-      height={500}
-    />
-  );
+    return (
+      <Image
+        key={img.id}
+        className={styles.section__img}
+        src={imgPath.src}
+        loader={imgPath.loader}
+        alt={img.title}
+        width={500}
+        height={500}
+      />
+    );
+  };
+
+  const renderImgs = Array.isArray(props.image)
+    ? props.image.map((el) => renderImgJSX(el))
+    : renderImgJSX(props.image);
 
   return (
     <div className={styles.section}>

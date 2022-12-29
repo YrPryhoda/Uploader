@@ -29,7 +29,8 @@
 	}
 
 	&__avatar {
-		padding: 3px;
+		display: flex;
+		object-fit: cover;
 		color: #fff;
 		background-color: #fff;
 		border-radius: 50%;
@@ -41,14 +42,25 @@
 	background-color: #eee;
 	display: flex;
 	flex-direction: column;
-	
+	justify-content: space-between;
+	height: 100%;
+
 	&__img {
 		object-fit: contain;
 		width: 100%;
+		cursor: pointer;
+	}
+
+	&__date {
+		margin: 0;
+		padding: 10px;
+		text-align: end;
+		color: rgb(82, 81, 81);
 	}
 
 	&__info {
-		padding: 0 10px;
+		padding: 10px;
+		height: 55px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
