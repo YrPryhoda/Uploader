@@ -3,6 +3,7 @@ import { SerializedError, createSlice } from "@reduxjs/toolkit";
 import { AppState } from "../..";
 import { modulePrefix } from "./search.prefix";
 import { uploadAvatar } from "../user/user.actions";
+import { deleteImage } from "../images/images.actions";
 
 interface InitialState {
   error: SerializedError | null;
@@ -67,6 +68,13 @@ const searchSlice = createSlice({
             ...state.searchUser,
             avatar: action.payload.avatar
           };
+        }
+      })
+      .addCase(deleteImage.fulfilled, (state, action) => {
+        if (state.searchUser) {
+          state.searchUser.images = state.searchUser.images?.filter(
+            (el) => el.id !== action.payload.id
+          );
         }
       })
 });

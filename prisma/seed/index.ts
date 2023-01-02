@@ -48,7 +48,6 @@ function createRandomLike(users: User[], images: Image[]): FakeLike {
 
 const getRandonId = <T extends { id: number }>(arr: T[]) => {
   const index = Math.round(Math.random() * arr.length - 1);
-  console.log(arr, index, arr[index], "STEP");
   return arr[index]?.id;
 };
 
@@ -58,14 +57,14 @@ async function main() {
   const IMAGES: FakeImage[] = [];
   const LIKES: FakeLike[] = [];
 
-  Array.from({ length: 200 }).forEach(() => {
+  Array.from({ length: 20 }).forEach(() => {
     USERS.push(createRandomUser());
   });
 
   await prisma.user.createMany({ data: USERS });
   const createdUsers = await prisma.user.findMany();
 
-  Array.from({ length: 200 }).forEach(() => {
+  Array.from({ length: 20 }).forEach(() => {
     const userId = getRandonId(createdUsers);
     IMAGES.push(createRandomImages(userId));
   });
@@ -86,7 +85,7 @@ async function main() {
   };
 
   await Promise.all([
-    Array.from({ length: 300 }).forEach(async () => {
+    Array.from({ length: 20 }).forEach(async () => {
       const likeInput = createRandomLike(createdUsers, createdImages);
       const isAlreadyCreated = isLikeExist(likeInput);
 

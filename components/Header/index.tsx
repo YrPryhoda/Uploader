@@ -22,6 +22,14 @@ const Header = () => {
         <Link className={styles.header__link} href={"/profile"}>
           Profile
         </Link>
+        <Link className={styles.header__link} href={"/user/messages"}>
+          <Image
+            width={48}
+            height={40}
+            alt={"Messages"}
+            src={"/chat-icon.svg"}
+          />
+        </Link>
         <Link className={styles.header__link} onClick={handlerLogout} href="#">
           Logout
         </Link>

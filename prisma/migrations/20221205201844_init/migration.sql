@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `image` ADD COLUMN `lat` DOUBLE NULL,
-    ADD COLUMN `lng` DOUBLE NULL;

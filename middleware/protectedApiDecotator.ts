@@ -1,10 +1,18 @@
 import { getSession } from "next-auth/react";
-import { NextApiResponse, NextApiRequest } from "next";
-import { createMiddlewareDecorator, NextFunction } from "next-api-decorators";
+import { NextApiResponse } from "next";
+import {
+  createMiddlewareDecorator,
+  ForbiddenException,
+  NextFunction
+} from "next-api-decorators";
 import { AuthorizedNextApiRequest } from "next-auth";
 
 export const ProtectedApiDecorator = createMiddlewareDecorator(
-  async (req: AuthorizedNextApiRequest, res: NextApiResponse, next: NextFunction) => {
+  async (
+    req: AuthorizedNextApiRequest,
+    res: NextApiResponse,
+    next: NextFunction
+  ) => {
     try {
       const session = await getSession({ req });
 
@@ -12,11 +20,11 @@ export const ProtectedApiDecorator = createMiddlewareDecorator(
         throw Error();
       }
 
-			req.user = session.user;
+      req.user = session.user;
       next();
     } catch (error) {
       console.log(error, "Middleware Decorator");
-      res.status(401).json({ message: "Unauthorized" });
+      throw new ForbiddenException("Unauthorized");
     }
   }
 );

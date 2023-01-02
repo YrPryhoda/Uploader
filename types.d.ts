@@ -50,3 +50,17 @@ interface IGeo {
   lng: number;
 }
 
+interface IMessage {
+  id: number;
+  text: string;
+  authorId: number;
+  chatId: number;
+  createdAt: Date;
+}
+
+interface IChat {
+  id: number;
+  createdAt: Date;
+  members: IUser[];
+  messages: IMessage[];
+}

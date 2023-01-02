@@ -12,20 +12,22 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  email     String    @unique
   name      String
   password  String
   avatar    String?
   images    Image[]
   likes     Like[]
+  messages  Message[] @relation("messages")
+  chats     Chat[]
 }
 
 model Image {
   id          Int      @id @default(autoincrement())
-  user        User     @relation(references: [id], fields: [userId])
+  user        User     @relation(references: [id], fields: [userId], onDelete: Cascade)
   title       String
   description String
   createdAt   DateTime @default(now())
@@ -37,9 +39,26 @@ model Image {
 
 model Like {
   id        Int      @id @default(autoincrement())
-  image     Image    @relation(fields: [imageId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   userId    Int
   imageId   Int
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  text      String
+  author    User     @relation("messages", fields: [authorId], references: [id])
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  createdAt DateTime @default(now())
+  authorId  Int
+  chatId    Int
+}
+
+model Chat {
+  id        Int       @id @default(autoincrement())
+  members   User[]
+  messages  Message[]
+  createdAt DateTime  @default(now())
 }
