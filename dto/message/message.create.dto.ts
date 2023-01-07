@@ -10,5 +10,8 @@ export class MessageCreateDto {
 
   @IsNotEmpty()
   authorId: number;
+
+  @IsNotEmpty()
+  recieverId: number;
 }
 

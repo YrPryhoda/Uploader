@@ -19,6 +19,13 @@ interface IUser {
   likes?: ILike[];
   images?: IImage[];
   avatar: string | null;
+  messageNotification?: IMessageNotification[];
+}
+
+interface IMessageNotification {
+  id: number;
+  userId: number;
+  chatId: number;
 }
 
 interface IUserRating extends IUser {
@@ -53,9 +60,19 @@ interface IGeo {
 interface IMessage {
   id: number;
   text: string;
+  author?: IUser;
+  chat?: IChat;
   authorId: number;
   chatId: number;
+  status: string;
   createdAt: Date;
+}
+
+interface IMessageInput {
+  text: string;
+  authorId: number;
+  recieverId: number;
+  chatId: number;
 }
 
 interface IChat {
@@ -64,3 +81,6 @@ interface IChat {
   members: IUser[];
   messages: IMessage[];
 }
+
+type IChatGeneral = Omit<IChat, "messages">;
+

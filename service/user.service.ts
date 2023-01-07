@@ -1,10 +1,9 @@
 import { NotFoundError } from "@prisma/client/runtime";
-import { Like, PrismaClient, User, Image } from "@prisma/client";
+import { Like, PrismaClient, User } from "@prisma/client";
 import { BadRequestException } from "next-api-decorators";
 
 import { ChangePasswordUserDto } from "./../dto/user/change-password.user.dto";
 import { CreateUserDto } from "./../dto/user/create.user.dto";
-import { DeepPartial } from "@reduxjs/toolkit";
 
 type UserRating = Omit<IUser, "images"> & {
   images: (IImage & { _count: { like: number }; like: Like[] })[];
@@ -16,6 +15,31 @@ class UserService {
     const users = await prisma.user.findMany();
     await prisma.$disconnect();
     return users;
+  }
+
+  async profile(id: number) {
+    const prisma = new PrismaClient();
+    try {
+      const data = await prisma.user.findUnique({
+        where: { id },
+        include: {
+          messageNotification: true,
+          images: {
+            orderBy: {
+              createdAt: "desc"
+            },
+            include: { like: true }
+          },
+          likes: true
+        }
+      });
+      await prisma.$disconnect();
+      return data;
+    } catch (error) {
+      console.log(error);
+      await prisma.$disconnect();
+      throw new BadRequestException("User exists");
+    }
   }
 
   async findByUnique(field: { [key: string]: string | number }) {

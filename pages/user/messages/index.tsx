@@ -9,6 +9,10 @@ interface IProps {
 }
 
 const UserMessages = ({ chats }: IProps) => {
+  if (!chats || !chats.length) {
+    return <p>Not Found</p>;
+  }
+
   return (
     <div className={styles.document}>
       <ChatList chats={chats} />

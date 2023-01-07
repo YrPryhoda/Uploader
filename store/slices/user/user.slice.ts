@@ -2,6 +2,7 @@ import { changePassword, setProfile, uploadAvatar } from "./user.actions";
 import { AppState } from "./../../index";
 import { userPrefix } from "./user.prefix";
 import { createSlice, SerializedError } from "@reduxjs/toolkit";
+import { deleteChatNotifications } from "../chat/chat.actions";
 
 interface InitialState {
   error: SerializedError | null;
@@ -50,6 +51,13 @@ const userSlice = createSlice({
       .addCase(uploadAvatar.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
+      })
+      .addCase(deleteChatNotifications.fulfilled, (state, action) => {
+        const chatId = action.payload.chatId;
+        const notifications = state.user?.messageNotification?.filter(
+          (el) => el.chatId !== chatId
+        );
+        state.user = { ...state.user!, messageNotification: notifications };
       })
 });
 

@@ -1,0 +1,16 @@
+.container {
+	min-width: 770px;
+	width: 70vw;
+	max-height: 60vh;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.messages {
+	height: calc(100vh - 400px);
+	padding: 22px;
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(238, 238, 238);
+}

@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 import styles from "./styles.module.scss";
+import { useAppSelector } from "../../store/hooks";
+import { userSliceSelector } from "../../store/slices/user/user.slice";
 
 const Header = () => {
   const session = useSession();
-
+  const { user } = useAppSelector(userSliceSelector);
   const handlerLogout = () => {
     signOut();
   };
@@ -23,12 +25,19 @@ const Header = () => {
           Profile
         </Link>
         <Link className={styles.header__link} href={"/user/messages"}>
-          <Image
-            width={48}
-            height={40}
-            alt={"Messages"}
-            src={"/chat-icon.svg"}
-          />
+          <div className={styles.header__msgBlock}>
+            <Image
+              width={48}
+              height={40}
+              alt={"Messages"}
+              src={"/chat-icon.svg"}
+            />
+            {user?.messageNotification?.length ? (
+              <span className={styles.header__notification}>
+                {user?.messageNotification?.length || null}
+              </span>
+            ) : null}
+          </div>
         </Link>
         <Link className={styles.header__link} onClick={handlerLogout} href="#">
           Logout

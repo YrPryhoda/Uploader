@@ -1,8 +1,15 @@
+import { ChatResponseDto } from "./../../../dto/chat/chat.response.dto";
+import { UserResponseDto } from "./../../../dto/user/user.response.dto";
 import { MessageCreateDto } from "./../../../dto/message/message.create.dto";
 import {
   BadRequestException,
   Body,
+  Delete,
+  ForbiddenException,
   Get,
+  NotFoundException,
+  Param,
+  ParseNumberPipe,
   Post,
   Req,
   ValidationPipe,
@@ -11,40 +18,91 @@ import {
 import type { AuthorizedNextApiRequest } from "next-auth";
 
 import { ProtectedApiDecorator } from "../../../middleware/protectedApiDecotator";
-import { ChatGetDto } from "./../../../dto/chat/chat.get.dto";
 import chatService from "../../../service/chat.service";
 import messageService from "../../../service/message.service";
+import messageNotificationService from "../../../service/messageNotification.service";
 
 @ProtectedApiDecorator()
 class ChatHandler {
-  @Post("/get-chat")
-  async getChat(@Body(ValidationPipe) body: ChatGetDto) {
+  @Get("/get-chat/:recieverId")
+  async getChat(
+    @Param("recieverId", ParseNumberPipe) recieverId: number,
+    @Req() req: AuthorizedNextApiRequest
+  ) {
     try {
-      return await chatService.findOrCreateChat(body.senderId, body.recieverId);
+      const senderId = Number(req.user.id);
+      const chat = await chatService.findOrCreateChat(senderId, recieverId);
+      return new ChatResponseDto(chat);
     } catch (error) {
       const err = error as Error;
-      return new BadRequestException(err.message);
+      throw new BadRequestException(err.message);
     }
   }
 
   @Post("/create-message")
-  async create(@Body(ValidationPipe) body: MessageCreateDto) {
+  async create(
+    @Body(ValidationPipe) body: MessageCreateDto,
+    @Req() req: AuthorizedNextApiRequest
+  ) {
     try {
+      const userId = Number(req.user.id);
+
+      if (userId !== body.authorId) {
+        throw new ForbiddenException("Action not allowed");
+      }
+
       const message = await messageService.create(
         body.authorId,
+        body.recieverId,
         body.chatId,
         body.text
       );
 
-      return message;
+      if (!message) {
+        throw new Error("Send message error");
+      }
+
+      return await chatService.getChatMessages(body.chatId);
     } catch (error) {
       const err = error as Error;
       console.log(error);
-      return new BadRequestException(err.message);
+      throw new BadRequestException(err.message);
     }
   }
 
-  @Get("/")
+  @Get("/update-chat-messages/:chatId")
+  async updateChatMessages(@Param("chatId", ParseNumberPipe) chatId: number) {
+    try {
+      const updatedChat = await messageService.changeStatus(chatId);
+      return updatedChat;
+    } catch (error) {
+      const err = error as Error;
+      console.log(error, "ERROR");
+      throw new BadRequestException(err.message);
+    }
+  }
+
+  @Get("/:chatId")
+  async getChatById(@Param("chatId", ParseNumberPipe) chatId: number) {
+    try {
+      const chat = await chatService.getChatMessages(chatId);
+
+      if (!chat) {
+        throw new NotFoundException("Not found");
+      }
+
+      return {
+        ...chat,
+        members: chat.members.map((user) => new UserResponseDto(user))
+      };
+    } catch (error) {
+      const err = error as Error;
+      console.log(error, "ERROR");
+      throw new BadRequestException(err.message);
+    }
+  }
+
+  @Get()
   async getUsersChats(@Req() req: AuthorizedNextApiRequest) {
     try {
       const userId = req.user.id!;
@@ -52,7 +110,26 @@ class ChatHandler {
     } catch (error) {
       const err = error as Error;
       console.log(error);
-      return new BadRequestException(err.message);
+      throw new BadRequestException(err.message);
+    }
+  }
+
+  @Delete("/delete-chat-notifications/:userId/:chatId")
+  async deleteNotifications(
+    @Param("userId", ParseNumberPipe) userId: number,
+    @Param("chatId", ParseNumberPipe) chatId: number
+  ) {
+    try {
+      console.log(userId, chatId);
+
+      return await messageNotificationService.deleteNotification(
+        userId,
+        chatId
+      );
+    } catch (error) {
+      const err = error as Error;
+      console.log(error);
+      throw new BadRequestException(err.message);
     }
   }
 }

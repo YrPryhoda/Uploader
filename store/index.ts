@@ -3,16 +3,19 @@ import { configureStore, Action, ThunkAction } from "@reduxjs/toolkit";
 import { userPrefix as userModulePrefix } from "./slices/user/user.prefix";
 import { modulePrefix as imageModulePrefix } from "./slices/images/images.prefix";
 import { modulePrefix as searchModulePrefix } from "./slices/search/search.prefix";
+import { modulePrefix as chatModulePrefix } from "./slices/chat/chat.prefix";
 
 import imagesSlice from "./slices/images/images.slice";
 import userSlice from "./slices/user/user.slice";
 import searchSlice from "./slices/search/search.slice";
+import chatSlice from "./slices/chat/chat.slice";
 
 export const store = configureStore({
   reducer: {
     [imageModulePrefix]: imagesSlice.reducer,
     [userModulePrefix]: userSlice.reducer,
-    [searchModulePrefix]: searchSlice.reducer
+    [searchModulePrefix]: searchSlice.reducer,
+    [chatModulePrefix]: chatSlice.reducer
   },
   devTools: true
 });

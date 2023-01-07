@@ -3,8 +3,12 @@ import styles from "./styles.module.scss";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { uploadAvatar } from "../../../store/slices/user/user.actions";
+import Link from "next/link";
+import { startChat } from "../../../store/slices/chat/chat.actions";
+import { chatSliceSelector } from "../../../store/slices/chat/chat.slice";
+import { notification } from "../../../lib/notifications";
 
 interface IProps {
   user: IUser;
@@ -15,6 +19,7 @@ const UserInfo = ({ user }: IProps) => {
   const { data, status } = useSession();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { loading } = useAppSelector(chatSliceSelector);
 
   const handlerSelectAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -22,6 +27,19 @@ const UserInfo = ({ user }: IProps) => {
       formData.append("avatar", e.target.files[0]);
       dispatch(uploadAvatar(formData));
     }
+  };
+
+  const handlerOpenChat = () => {
+    dispatch(startChat(user.id)).then((data) => {
+      if (data.meta.requestStatus === "fulfilled") {
+        const chat = data.payload as IChat;
+        if (chat.id) {
+          router.push(`/user/messages/chat/${chat.id}`);
+        }
+      } else {
+        notification("error", "Some error happened");
+      }
+    });
   };
 
   const handlerUploadClick = () => {
@@ -98,6 +116,9 @@ const UserInfo = ({ user }: IProps) => {
           <p className={styles.header__details}>
             On platform since: {memoCreatedDate}
           </p>
+          <button onClick={handlerOpenChat}>
+            {loading ? "Loading" : "Send message"}
+          </button>
         </div>
       </div>
     </div>

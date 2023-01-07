@@ -12,17 +12,27 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  email     String    @unique
-  name      String
-  password  String
-  avatar    String?
-  images    Image[]
-  likes     Like[]
-  messages  Message[] @relation("messages")
-  chats     Chat[]
+  id                  Int                   @id @default(autoincrement())
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  email               String                @unique
+  name                String
+  password            String
+  avatar              String?
+  images              Image[]
+  likes               Like[]
+  messages            Message[]             @relation("messages")
+  chats               Chat[]
+  messageNotification MessageNotification[]
+}
+
+model MessageNotification {
+  id      Int     @id @default(autoincrement())
+  message Message @relation(fields: [id], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chat    Chat    @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId  Int
+  userId  Int
 }
 
 model Image {
@@ -46,19 +56,23 @@ model Like {
   imageId   Int
 }
 
+
 model Message {
-  id        Int      @id @default(autoincrement())
-  text      String
-  author    User     @relation("messages", fields: [authorId], references: [id])
-  chat      Chat     @relation(fields: [chatId], references: [id])
-  createdAt DateTime @default(now())
-  authorId  Int
-  chatId    Int
+  id                  Int                  @id @default(autoincrement())
+  text                String               @db.Text
+  author              User                 @relation("messages", fields: [authorId], references: [id])
+  chat                Chat                 @relation(fields: [chatId], references: [id])
+  createdAt           DateTime             @default(now())
+  authorId            Int
+  chatId              Int
+  status              String               @default("new") //delivered, read
+  messageNotification MessageNotification?
 }
 
 model Chat {
-  id        Int       @id @default(autoincrement())
-  members   User[]
-  messages  Message[]
-  createdAt DateTime  @default(now())
+  id            Int                   @id @default(autoincrement())
+  members       User[]
+  messages      Message[]
+  notifications MessageNotification[]
+  createdAt     DateTime              @default(now())
 }

@@ -1,0 +1,66 @@
+.message {
+	box-sizing: border-box;
+	padding: 12px;
+	gap: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	margin-bottom: 2px;
+	border-radius: 10px;
+	width: 80%;
+
+	&__author {
+		width: 64px;
+		display: flex;
+		justify-content: center;
+		height: 100%;
+		align-self: stretch;
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	&__title,
+	&__text,
+	&__date {
+		margin: 0;
+	}
+
+	&__text {
+		text-align: start;
+	}
+
+	&__date {
+		color: rgb(154, 154, 154);
+		display: flex;
+		font-size: 0.8rem;
+		justify-content: flex-end;
+	}
+}
+
+.reverse {
+	background-color: rgb(189, 199, 254);
+	flex-flow: row-reverse;
+	align-self: flex-end;
+}
+
+.order_reverse {
+	text-align: end;
+}
+
+.date_reverse {
+	margin: 0;
+	color: rgb(154, 154, 154);
+	font-size: 0.8rem;
+	display: flex;
+	justify-content: flex-start;
+}
+
+.new {
+	background-color: rgb(247, 247, 164);
+}

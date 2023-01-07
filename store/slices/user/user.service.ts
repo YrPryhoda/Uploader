@@ -1,6 +1,16 @@
 import { notification } from "./../../../lib/notifications";
 
 class UserService {
+  async profile() {
+    try {
+      const response = await fetch(`/api/user/profile`);
+      return await response.json();
+    } catch (error) {
+      const err = error as Error;
+      notification("error", err.message);
+    }
+  }
+
   async getById(id: string) {
     try {
       const response = await fetch(`/api/user/${id}`);

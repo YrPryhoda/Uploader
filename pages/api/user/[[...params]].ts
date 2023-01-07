@@ -19,8 +19,6 @@ import { ProtectedApiDecorator } from "../../../middleware/protectedApiDecotator
 import { UserResponseDto } from "../../../dto/user/user.response.dto";
 import { CreateUserDto } from "./../../../dto/user/create.user.dto";
 import userService from "../../../service/user.service";
-import { getFormidable } from "../../../lib/formidable";
-import path from "path";
 
 class UserHandler {
   @ProtectedApiDecorator()
@@ -40,6 +38,22 @@ class UserHandler {
       const users: IUserRating[] = await userService.rating();
 
       return users.map((user) => new UserRatingResponseDto(user));
+    } catch (error) {
+      const err = error as Error;
+      throw new BadRequestException(err.message);
+    }
+  }
+
+  @ProtectedApiDecorator()
+  @Get("/profile")
+  async profile(@Req() req: AuthorizedNextApiRequest) {
+    try {
+      const id = Number(req.user.id!);
+      const user = await userService.profile(id);
+      if (!user) {
+        throw Error("Not found");
+      }
+      return new UserResponseDto(user);
     } catch (error) {
       const err = error as Error;
       throw new BadRequestException(err.message);

@@ -1,6 +1,8 @@
 import { NotFoundError } from "@prisma/client/runtime";
 import { PrismaClient } from "@prisma/client";
+import { ProtectedApiDecorator } from "../middleware/protectedApiDecotator";
 
+@ProtectedApiDecorator()
 class ChatService {
   async getChatMessages(chatId: number) {
     const prisma = new PrismaClient();
@@ -12,6 +14,10 @@ class ChatService {
         include: {
           members: true,
           messages: {
+            take: 30,
+            orderBy: {
+              createdAt: "asc"
+            },
             include: {
               author: true
             }
@@ -36,6 +42,15 @@ class ChatService {
           chats: {
             include: {
               messages: {
+                include: {
+                  author: {
+                    select: {
+                      id: true,
+                      avatar: true,
+                      name: true
+                    }
+                  }
+                },
                 orderBy: { createdAt: "desc" },
                 take: 1
               },
@@ -67,9 +82,7 @@ class ChatService {
         include: {
           chats: {
             include: {
-              members: {
-                select: { id: true, email: true, name: true, avatar: true }
-              },
+              members: true,
               messages: true
             },
             where: {

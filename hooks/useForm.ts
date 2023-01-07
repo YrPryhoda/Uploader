@@ -3,7 +3,7 @@ import { useState } from "react";
 export const useForm = <T>(initialState: T) => {
   const [form, setForm] = useState<T>(initialState);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prevState) => {
       return {
         ...prevState,
