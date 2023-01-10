@@ -40,6 +40,11 @@ class ChatService {
         where: { id: userId },
         select: {
           chats: {
+            orderBy: {
+              notifications: {
+                _count: "desc"
+              }
+            },
             include: {
               messages: {
                 include: {

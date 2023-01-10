@@ -23,18 +23,24 @@
 		flex-direction: column;
 		justify-content: center;
 		flex: 1;
+		padding: 12px 12px 12px 0;
 		word-wrap: break-word;
 	}
 
 	&__message {
-		padding: 5px;
+		padding: 10px 5px;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+	}
+
+	&__newMessage {
+		border-radius: 10px;
+		background-color: rgb(133, 154, 249);
 	}
 
 	&__text {
 		margin: 0;
-		padding-bottom: 12px;
 		overflow: hidden;
 		max-width: 100%;
 	}

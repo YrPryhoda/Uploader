@@ -1,6 +1,3 @@
-import { ChatResponseDto } from "./../../../dto/chat/chat.response.dto";
-import { UserResponseDto } from "./../../../dto/user/user.response.dto";
-import { MessageCreateDto } from "./../../../dto/message/message.create.dto";
 import {
   BadRequestException,
   Body,
@@ -17,10 +14,13 @@ import {
 } from "next-api-decorators";
 import type { AuthorizedNextApiRequest } from "next-auth";
 
+import messageNotificationService from "../../../service/messageNotification.service";
 import { ProtectedApiDecorator } from "../../../middleware/protectedApiDecotator";
+import { MessageCreateDto } from "./../../../dto/message/message.create.dto";
+import { ChatResponseDto } from "./../../../dto/chat/chat.response.dto";
+import { UserResponseDto } from "./../../../dto/user/user.response.dto";
 import chatService from "../../../service/chat.service";
 import messageService from "../../../service/message.service";
-import messageNotificationService from "../../../service/messageNotification.service";
 
 @ProtectedApiDecorator()
 class ChatHandler {
@@ -31,6 +31,11 @@ class ChatHandler {
   ) {
     try {
       const senderId = Number(req.user.id);
+
+      if (senderId === recieverId) {
+        throw new BadRequestException("Can not send message to yourself");
+      }
+
       const chat = await chatService.findOrCreateChat(senderId, recieverId);
       return new ChatResponseDto(chat);
     } catch (error) {
@@ -120,8 +125,6 @@ class ChatHandler {
     @Param("chatId", ParseNumberPipe) chatId: number
   ) {
     try {
-      console.log(userId, chatId);
-
       return await messageNotificationService.deleteNotification(
         userId,
         chatId

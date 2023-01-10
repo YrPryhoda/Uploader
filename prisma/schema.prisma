@@ -56,12 +56,11 @@ model Like {
   imageId   Int
 }
 
-
 model Message {
   id                  Int                  @id @default(autoincrement())
   text                String               @db.Text
   author              User                 @relation("messages", fields: [authorId], references: [id])
-  chat                Chat                 @relation(fields: [chatId], references: [id])
+  chat                Chat                 @relation(fields: [chatId], references: [id], onUpdate: Cascade) 
   createdAt           DateTime             @default(now())
   authorId            Int
   chatId              Int
@@ -75,4 +74,5 @@ model Chat {
   messages      Message[]
   notifications MessageNotification[]
   createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @default(now()) @updatedAt
 }

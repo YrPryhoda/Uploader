@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import NProgress from "nprogress";
 import Router from "next/router";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 
 import "react-toastify/dist/ReactToastify.css";
 import "nprogress/nprogress.css";
@@ -14,7 +14,6 @@ import { store } from "../../../store";
 import GetProfile from "../GetProfile";
 import Header from "../../Header";
 import DropDownMenu from "../../common/DropDownMenu";
-
 interface IProps {
   children: React.ReactElement;
 }

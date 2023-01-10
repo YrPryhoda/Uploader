@@ -63,7 +63,20 @@
 	}
 
 	&__info {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: 12px;
 		padding: 0 30px;
 		color: #fff;
+	}
+
+	&__details {
+		margin: 0;
+	}
+
+	&__message {
+		cursor: pointer;
+		padding: 6px 12px;
 	}
 }

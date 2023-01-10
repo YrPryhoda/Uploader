@@ -116,9 +116,14 @@ const UserInfo = ({ user }: IProps) => {
           <p className={styles.header__details}>
             On platform since: {memoCreatedDate}
           </p>
-          <button onClick={handlerOpenChat}>
-            {loading ? "Loading" : "Send message"}
-          </button>
+          {Number(user.id) === Number(data?.user.id) ? null : (
+            <button
+              onClick={handlerOpenChat}
+              className={styles.header__message}
+            >
+              {loading ? "Loading" : "Send message"}
+            </button>
+          )}
         </div>
       </div>
     </div>
