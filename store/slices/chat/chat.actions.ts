@@ -24,7 +24,7 @@ export const sendMessage = createAsyncThunk<IChat, IMessageInput>(
   }
 );
 
-export const changeMessagesStatus = createAsyncThunk<any, number>(
+export const changeMessagesStatus = createAsyncThunk<IChat, number>(
   `${modulePrefix}/messages-status`,
   async (chatId, options) => {
     try {

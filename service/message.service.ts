@@ -58,11 +58,16 @@ class MessageService {
     }
   }
 
-  async changeStatus(chatId: number) {
+  async changeStatus(chatId: number, userId: number) {
     const prisma = new PrismaClient();
     try {
       const updatedMessage = await prisma.message.updateMany({
-        where: { chatId },
+        where: {
+          AND: {
+            chatId,
+            NOT: { authorId: userId }
+          }
+        },
         data: {
           status: "read"
         }

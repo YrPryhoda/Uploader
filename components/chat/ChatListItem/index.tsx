@@ -18,10 +18,10 @@ const ChatListItem = ({ chat }: IProps) => {
     (el) => el.id !== Number(data?.user.id)
   );
   const message = chat.messages[0];
+
   const { user } = useSelector(userSliceSelector);
-  const isNewMessage = user?.messageNotification?.some(
-    (el) => el.id === message.id
-  );
+  const isNewMessage =
+    message && user?.messageNotification?.some((el) => el.id === message.id);
 
   return (
     <div className={styles.item}>

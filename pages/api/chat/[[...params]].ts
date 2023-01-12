@@ -76,10 +76,15 @@ class ChatHandler {
   }
 
   @Get("/update-chat-messages/:chatId")
-  async updateChatMessages(@Param("chatId", ParseNumberPipe) chatId: number) {
+  async updateChatMessages(
+    @Param("chatId", ParseNumberPipe) chatId: number,
+    @Req() req: AuthorizedNextApiRequest
+  ) {
     try {
-      const updatedChat = await messageService.changeStatus(chatId);
-      return updatedChat;
+      const userId = Number(req.user.id!);
+      const updatedChat = await messageService.changeStatus(chatId, userId);
+      const messages = await chatService.getChatMessages(chatId);
+      return messages;
     } catch (error) {
       const err = error as Error;
       console.log(error, "ERROR");

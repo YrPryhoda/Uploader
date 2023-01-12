@@ -25,7 +25,12 @@ export default async function handler(
         itemToDelete.title
       );
       try {
-        await fs.unlink(imagePath);
+        try {
+          await fs.access(imagePath);
+          await fs.unlink(imagePath);
+        } catch (_) {
+          console.log("This image is link from Internet");
+        }
       } catch (error) {
         console.log(error);
       }

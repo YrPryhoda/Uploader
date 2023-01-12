@@ -50,11 +50,8 @@ const chatSlice = createSlice({
         state.loading = false;
         state.error = action.error;
       })
-      .addCase(changeMessagesStatus.fulfilled, (state) => {
-        state.messages = state.messages.map((el) => {
-          el.status = "read";
-          return el;
-        });
+      .addCase(changeMessagesStatus.fulfilled, (state, action) => {
+        state.messages = action.payload.messages;
       })
       .addCase(startChat.pending, (state) => {
         state.loading = true;
