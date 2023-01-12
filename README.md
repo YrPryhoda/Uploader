@@ -1,6 +1,6 @@
 ## This project created with the purpose of improving technical skill in NextJS and SQL
 
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://github.com/YrPryhoda/Uploader/blob/main/README/next-images-demo.avi)
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://drive.google.com/file/d/1R6qTXPLwNZIoPgZ9sb2B7FBpLqIJ7hLR/view?usp=sharing)
 
 
 ### Tricks and technologies used in this application:
